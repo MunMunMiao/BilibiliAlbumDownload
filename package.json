@@ -1,0 +1,24 @@
+{
+  "name": "bilibilialbumdownload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bilibili.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MunMunMiao/BilibiliAlbumDownload.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MunMunMiao/BilibiliAlbumDownload/issues"
+  },
+  "homepage": "https://github.com/MunMunMiao/BilibiliAlbumDownload#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "commander": "^4.1.1",
+    "rxjs": "^6.5.4"
+  }
+}
