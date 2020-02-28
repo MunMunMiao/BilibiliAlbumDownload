@@ -134,7 +134,7 @@ async function main(){
     const items = await findPictures()
 
     fs.mkdirSync(directory, { recursive: true })
-    await writeFile(items)
+    writeFile(items)
     if (outputFile){
         download(items.slice(1, 15))
     }
