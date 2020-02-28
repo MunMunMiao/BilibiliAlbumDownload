@@ -19,7 +19,7 @@ node bilibili.js -u 8366990
 
 ## Options
 ```text
-Usage: index [options]
+Usage: bilibili [options]
 
 Options:
   -u, --uid <number>        Bilibili uid
