@@ -138,7 +138,7 @@ async function main(){
 
     writeFile(items)
     if (outputFile){
-        download(items.slice(1, 15))
+        download(items)
     }
 }
 
