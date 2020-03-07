@@ -129,7 +129,7 @@ function download(items){
         .subscribe(result => {
             const filename = result.request.path.match(/[a-zA-Z0-9.]*$/gi)[0]
             console.log(`Download: ${ (currentIndex += 1) }/${ items.length } ${ (currentIndex / items.length * 100).toFixed(2) }%`)
-            fs.writeFileSync(path.join(directory, filename), result.data)
+            fs.writeFileSync(path.join(dir, filename), result.data)
         })
 }
 
