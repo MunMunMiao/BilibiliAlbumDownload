@@ -24,7 +24,7 @@ if (commander.uid){
     bilibiliUid = commander.uid
 }
 if (commander.directory){
-    directory = path.join(commander.directory)
+    directory = path.join(commander.directory, bilibiliUid)
 }
 if (commander.threads){
     thread = Number(commander.threads)
@@ -112,9 +112,6 @@ function writeFile(items){
 
 function download(items){
     let currentIndex = 0
-    const dir = path.join(directory, bilibiliUid)
-
-    fs.mkdirSync(dir, { recursive: true })
 
     from(items)
         .pipe(
@@ -129,12 +126,14 @@ function download(items){
         .subscribe(result => {
             const filename = result.request.path.match(/[a-zA-Z0-9.]*$/gi)[0]
             console.log(`Download: ${ (currentIndex += 1) }/${ items.length } ${ (currentIndex / items.length * 100).toFixed(2) }%`)
-            fs.writeFileSync(path.join(dir, filename), result.data)
+            fs.writeFileSync(path.join(directory, filename), result.data)
         })
 }
 
 async function main(){
     const items = await findPictures()
+
+    fs.mkdirSync(directory, { recursive: true })
 
     writeFile(items)
     if (outputFile){
