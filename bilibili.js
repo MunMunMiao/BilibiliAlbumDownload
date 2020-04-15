@@ -3,7 +3,7 @@ const path = require('path')
 const axios = require('axios')
 const commander = require('commander')
 const { from } = require('rxjs')
-const { mergeMap } = require('rxjs/operators')
+const { mergeMap, tap } = require('rxjs/operators')
 
 commander
     .requiredOption('-u, --uid <number>', 'Bilibili uid')
@@ -110,7 +110,7 @@ function writeFile(items){
     fs.writeFileSync(path.join(directory, `bilibili-${ bilibiliUid }.txt`), str)
 }
 
-function download(items){
+function download(items) {
     let currentIndex = 0
 
     from(items)
@@ -123,10 +123,15 @@ function download(items){
                     }
                 }))
             }, thread))
-        .subscribe(result => {
-            const filename = result.request.path.match(/[a-zA-Z0-9.]*$/gi)[0]
-            console.log(`Download: ${ (currentIndex += 1) }/${ items.length } ${ (currentIndex / items.length * 100).toFixed(2) }%`)
-            fs.writeFileSync(path.join(directory, filename), result.data)
+        .subscribe({
+            next: result => {
+                const filename = result.request.path.match(/[a-zA-Z0-9.]*$/gi)[0]
+                console.log(`Complete: ${(currentIndex += 1)}/${items.length} ${(currentIndex / items.length * 100).toFixed(2)}%`)
+                fs.writeFileSync(path.join(directory, filename), result.data)
+            },
+            complete: () => {
+                process.exit()
+            }
         })
 }
 
@@ -138,6 +143,8 @@ async function main(){
     writeFile(items)
     if (outputFile){
         download(items)
+    }else {
+        process.exit()
     }
 }
 
