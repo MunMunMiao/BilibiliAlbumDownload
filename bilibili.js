@@ -62,7 +62,8 @@ async function findPictures(){
 
         quest.push(axios.get('https://api.vc.bilibili.com/link_draw/v1/doc/doc_list', {
             headers: {
-                'User-Agent': userAgent
+                'User-Agent': userAgent,
+                referer: 'https://space.bilibili.com/'
             },
             params: {
                 uid: bilibiliUid,
@@ -72,17 +73,22 @@ async function findPictures(){
             },
             transformResponse: data => {
                 const resp = JSON.parse(data)
-                const items = resp.data.items
                 let arr = []
 
-                for (const item of items){
-                    const pictures = []
+                if (resp.code === 0){
+                    const items = resp.data.items
 
-                    for (const subItem of item.pictures){
-                        pictures.push(subItem.img_src)
+                    for (const item of items){
+                        const pictures = []
+
+                        for (const subItem of item.pictures){
+                            pictures.push(subItem.img_src)
+                        }
+
+                        arr = arr.concat(pictures)
                     }
-
-                    arr = arr.concat(pictures)
+                }else {
+                    throw new Error(resp.message)
                 }
 
                 return arr
